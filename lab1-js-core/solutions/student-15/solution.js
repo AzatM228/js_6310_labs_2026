@@ -99,7 +99,6 @@ const book = {
 };
 
 const student = {
-    // 3.2 Объект "студент"
     name: "Анна Петрова",
     age: 20,
     course: 2,
@@ -116,8 +115,33 @@ const student = {
     },
 
     addGrade(subject, grade) {
-        this.grades[subject] = grade;
-        return this.grades;
+        // 1. Проверка subject: должно быть непустой строкой
+        if (typeof subject !== 'string' || subject.trim() === '') {
+            console.warn('addGrade: название предмета не может быть пустым');
+            return false;
+        }
+
+        // 2. Проверка grade: должно быть числом
+        if (typeof grade !== 'number' || !Number.isFinite(grade)) {
+            console.warn('addGrade: оценка должна быть числом');
+            return false;
+        }
+
+        // 3. Проверка grade: целое число (если оценки целые)
+        if (!Number.isInteger(grade)) {
+            console.warn('addGrade: оценка должна быть целым числом');
+            return false;
+        }
+
+        // 4. Проверка grade: не отрицательное и не больше 100
+        if (grade < 0 || grade > 100) {
+            console.warn('addGrade: оценка должна быть в диапазоне 0..100');
+            return false;
+        }
+
+        // Всё ок — добавляем
+        this.grades[subject.trim()] = grade;
+        return true;
     }
 };
 
